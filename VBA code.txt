@@ -1,0 +1,60 @@
+Dim LR As Long
+
+Summary_Table_Row = 2
+Stockvol_total = 0
+
+For Each ws In Worksheets
+
+    'Determine the last row
+    LR = Cells(Rows.Count, "A").End(xlUp).Row
+
+    'Add 4 columns and their respective labels & values to each sheet
+
+    'Ticker column
+    ws.Range("J1").EntireColumn.Insert
+    ws.Cells(1, 10).Value = "Ticker"
+    
+     'Yearly change column
+    ws.Range("K1").EntireColumn.Insert
+    ws.Cells(1, 11).Value = "Yearly Change"
+    
+    'Percentage change column
+    ws.Range("L1").EntireColumn.Insert
+    ws.Cells(1, 12).Value = "Percentage Change"
+    
+    'Total volume stock column
+    ws.Range("M1").EntireColumn.Insert
+    ws.Cells(1, 13).Value = "Total Stock Volume"
+    
+    For i = 2 To LR
+    
+        If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+         ' Set stock name
+            Ticker = Cells(i, 1).Value
+          
+          'Add to stock volume total
+            Stockvol_total = Stockvol_total + Cells(i, 7)
+           
+           'Print stock name in the ticker column
+          
+            Range("J" & Summary_Table_Row).Value = Ticker
+            
+            'Print total stock volume to Total Stock Volumn column
+            Range("M" & Summary_Table_Row).Value = Stockvol_total
+          
+             'Add one to summary table
+            Summary_Table_Row = Summary_Table_Row + 1
+            
+            Stockvol_total = 0
+          
+         Else
+         
+         ' add to the Stock vol total
+         Stockvol_total = Stockvol_total + Cells(i, 7).Value
+        
+        End If
+    Next i
+    
+Next
+    
+End Sub
